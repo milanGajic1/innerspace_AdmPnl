@@ -1,22 +1,20 @@
 package innerspaceAdmPnl.ui.tests;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
 import innerspaceAdmPnl.ui.browser.BrowserManager;
+import org.testng.annotations.BeforeTest;
 
 public abstract class BaseTest {
     protected WebDriver driver;
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeTest(alwaysRun = true)
     public void setUp() {
         driver = BrowserManager.getDriver();
         driver.manage().window().maximize();
     }
 
-//    @AfterMethod
+//    @AfterMethod(alwaysRun = true)
 //    public void tearDown() {
 //        BrowserManager.closeDriver();
 //    }
-
-    // Common methods or utilities for tests can be added here
 }

@@ -2,10 +2,12 @@ package innerspaceAdmPnl.ui.config;
 
 import static innerspaceAdmPnl.ui.config.Constants.*;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import innerspaceAdmPnl.ui.browser.BrowserManager;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver;
 
 public class Waits {
     protected static WebDriverWait wait = new WebDriverWait(BrowserManager.getDriver(), DEFAULT_WAIT_TIMEOUT);
@@ -25,6 +27,15 @@ public class Waits {
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception exception) {
             System.out.println("Element " + element + " is not clickable.");
+        }
+    }
+
+    // Waits for the entire web page to load completely
+    public static void waitForPageLoadComplete() {
+        try {
+            wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        } catch (Exception exception) {
+            System.out.println("Page did not load completely.");
         }
     }
 }
