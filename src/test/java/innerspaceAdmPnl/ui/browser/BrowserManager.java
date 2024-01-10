@@ -1,19 +1,19 @@
 package innerspaceAdmPnl.ui.browser;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 
 public class BrowserManager {
-    public static WebDriver driver;
+    private static WebDriver driver;
+    private BrowserManager() {
+    }
 
     public static WebDriver getDriver() {
         if (driver == null) {
-            // Use WebDriverManager to manage the Edge driver
-            WebDriverManager.edgedriver().setup();
-
-            // Initialize the EdgeDriver
+            // Initialize the WebDriver instance here, for example using EdgeDriver
             driver = new EdgeDriver();
+            // Perform any additional setup, like maximizing the window
+            driver.manage().window().maximize();
         }
         return driver;
     }
@@ -21,7 +21,7 @@ public class BrowserManager {
     public static void closeDriver() {
         if (driver != null) {
             driver.quit();
-            driver = null;
+            driver = null; // Ensure driver is set to null after quitting
         }
     }
 }

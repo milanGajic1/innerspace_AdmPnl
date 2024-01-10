@@ -13,9 +13,9 @@ import org.openqa.selenium.support.Color;
 public class LogInPage extends BasePage {
 
     private By signInButton = By.xpath("//button[normalize-space()='Sign in']");
-    private By emailField = By.id("email_field_id"); // Replace with actual ID
-    private By passwordField = By.id("password_field_id"); // Replace with actual ID
-    private By microsoftFrame = By.id("id attribute is not available for this element"); // Replace with actual frame ID
+    private By emailField = By.id("email_field_id");
+    private By passwordField = By.id("password_field_id");
+    private By microsoftFrame = By.id("id attribute is not available for this element");
     private By loggedInElementSelector = By.xpath("(//img[@alt='innerspace-logo'])[1]");
     private By loggedInUser = By.xpath("//span[@class='css-1y8io4']");
     private By existingMicrosoftUser = By.xpath("//div[@data-bind='text: ((session.isSignedIn || session.isSamsungSso) && session.unsafe_fullName) || session.unsafe_displayName']");
@@ -25,10 +25,19 @@ public class LogInPage extends BasePage {
         super(driver);
     }
 
+    public void loginWithCredentials(String url, String email, String password) {
+        navigateToPage(url);
+        clickSignIn();
+        enterMicrosoftCredentials(email, password);
+    }
+    public void login(String url) {
+        navigateToPage(url);
+        clickSignIn();
+    }
     public void navigateToPage(String url) {
         driver.get(url);
         Waits.waitForPageLoadComplete();
-        originalWindowHandle = driver.getWindowHandle(); // Store the original window handle
+        originalWindowHandle = driver.getWindowHandle();
     }
 
     public void clickSignIn() {
@@ -55,7 +64,7 @@ public class LogInPage extends BasePage {
         WebDriverWait wait = new WebDriverWait(driver, Constants.DEFAULT_WAIT_TIMEOUT);
         WebElement userElement = wait.until(ExpectedConditions.elementToBeClickable(existingMicrosoftUser));
         userElement.click();
-        driver.switchTo().window(originalWindowHandle); // Switch back to the original window
+        driver.switchTo().window(originalWindowHandle);
     }
 
     public void enterMicrosoftCredentials(String email, String password) {
@@ -65,7 +74,7 @@ public class LogInPage extends BasePage {
         emailElement.sendKeys(email);
         passwordElement.sendKeys(password);
         passwordElement.submit();
-        driver.switchTo().window(originalWindowHandle); // Switch back to the original window
+        driver.switchTo().window(originalWindowHandle);
     }
 
     public boolean isUserLoggedIn() {

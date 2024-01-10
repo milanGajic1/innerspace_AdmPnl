@@ -1,12 +1,12 @@
 package innerspaceAdmPnl.ui.config;
 
-import static innerspaceAdmPnl.ui.browser.BrowserManager.driver;
+import static innerspaceAdmPnl.ui.browser.BrowserManager.getDriver;
 import static innerspaceAdmPnl.ui.config.Waits.waitToBeClickable;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 public class Wrappers {
-    private static final JavascriptExecutor executor = (JavascriptExecutor)driver;
+    private static final JavascriptExecutor executor = (JavascriptExecutor) getDriver();
 
     // Types text into a web element after clearing any existing text
     public static void type(WebElement element, String text) {
