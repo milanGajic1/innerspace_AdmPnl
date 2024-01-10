@@ -2,6 +2,7 @@ package innerspaceAdmPnl.ui.tests;
 
 import org.openqa.selenium.WebDriver;
 import innerspaceAdmPnl.ui.browser.BrowserManager;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 public abstract class BaseTest {
@@ -13,8 +14,8 @@ public abstract class BaseTest {
         driver.manage().window().maximize();
     }
 
-//    @AfterMethod(alwaysRun = true)
-//    public void tearDown() {
-//        BrowserManager.closeDriver();
-//    }
+    @AfterTest(alwaysRun = true)
+    public void tearDown() {
+        BrowserManager.closeDriver();
+    }
 }
