@@ -2,22 +2,24 @@ package innerspaceAdmPnl.ui.pages.login;
 
 import innerspaceAdmPnl.ui.config.Constants;
 import innerspaceAdmPnl.ui.config.Waits;
-import innerspaceAdmPnl.ui.config.Wrappers;
 import innerspaceAdmPnl.ui.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.Color;
 
 public class LogInPage extends BasePage {
 
     private By signInButton = By.xpath("//button[normalize-space()='Sign in']");
-    private By emailField = By.xpath("//*[@id=\"i0116\"]");
-    private By passwordField = By.xpath("//*[@id=\"i0118\"]");
-    private By loggedInElementSelector = By.xpath("//img[@alt='innerspace-logo']");
+    private By emailField = By.id("email_field_id"); // Replace with actual ID
+    private By passwordField = By.id("password_field_id"); // Replace with actual ID
+    private By microsoftFrame = By.id("id attribute is not available for this element"); // Replace with actual frame ID
+    private By loggedInElementSelector = By.xpath("(//img[@alt='innerspace-logo'])[1]");
+    private By loggedInUser = By.xpath("//span[@class='css-1y8io4']");
     private By existingMicrosoftUser = By.xpath("//div[@data-bind='text: ((session.isSignedIn || session.isSamsungSso) && session.unsafe_fullName) || session.unsafe_displayName']");
-
+    private String originalWindowHandle;
 
     public LogInPage(WebDriver driver) {
         super(driver);
@@ -25,43 +27,60 @@ public class LogInPage extends BasePage {
 
     public void navigateToPage(String url) {
         driver.get(url);
+        Waits.waitForPageLoadComplete();
+        originalWindowHandle = driver.getWindowHandle(); // Store the original window handle
     }
 
     public void clickSignIn() {
         Waits.waitForPageLoadComplete();
-        Wrappers.click(driver.findElement(signInButton));
-        handleNewWindowOrFrame();
+        WebElement signInBtn = Waits.waitToBeClickable(signInButton);
+        if (signInBtn != null) {
+            signInBtn.click();
+            handleNewWindowOrFrame();
+        } else {
+            System.out.println("Sign In button not clickable.");
+        }
     }
 
     private void handleNewWindowOrFrame() {
-        String originalWindow = driver.getWindowHandle();
         for (String windowHandle : driver.getWindowHandles()) {
-            if (!originalWindow.contentEquals(windowHandle)) {
+            if (!originalWindowHandle.contentEquals(windowHandle)) {
                 driver.switchTo().window(windowHandle);
                 break;
             }
         }
     }
+
     public void clickOnExistingMicrosoftUser() {
-        WebDriverWait wait = new WebDriverWait(driver,Constants.DEFAULT_WAIT_TIMEOUT);
+        WebDriverWait wait = new WebDriverWait(driver, Constants.DEFAULT_WAIT_TIMEOUT);
         WebElement userElement = wait.until(ExpectedConditions.elementToBeClickable(existingMicrosoftUser));
         userElement.click();
-        driver.switchTo().window(driver.getWindowHandle()); // Switch back to the original window
+        driver.switchTo().window(originalWindowHandle); // Switch back to the original window
     }
+
     public void enterMicrosoftCredentials(String email, String password) {
         WebDriverWait wait = new WebDriverWait(driver, Constants.DEFAULT_WAIT_TIMEOUT);
-        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(this.emailField));
-        WebElement passwordField = driver.findElement(this.passwordField);
-        emailField.sendKeys(email);
-        passwordField.sendKeys(password);
-        passwordField.submit();
-        driver.switchTo().window(driver.getWindowHandle()); // Switch back to the original window
+        WebElement emailElement = wait.until(ExpectedConditions.elementToBeClickable(emailField));
+        WebElement passwordElement = driver.findElement(passwordField);
+        emailElement.sendKeys(email);
+        passwordElement.sendKeys(password);
+        passwordElement.submit();
+        driver.switchTo().window(originalWindowHandle); // Switch back to the original window
     }
 
     public boolean isUserLoggedIn() {
-        WebDriverWait wait = new WebDriverWait(driver, Constants.DEFAULT_WAIT_TIMEOUT);
-        WebElement loggedInElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loggedInElementSelector));
-        return loggedInElement.isDisplayed();
+        try {
+            WebElement badgeElement = Waits.waitToBeVisible(loggedInUser);
+            if (badgeElement != null) {
+                String colorValue = badgeElement.getCssValue("background-color");
+                String rgbColor = Color.fromString(colorValue).asRgb();
+                return rgbColor.equals("rgb(113, 221, 55)");
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error checking login status: " + e.getMessage());
+            return false;
+        }
     }
-
 }
