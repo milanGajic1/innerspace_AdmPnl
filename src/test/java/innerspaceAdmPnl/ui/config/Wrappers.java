@@ -4,6 +4,7 @@ import static innerspaceAdmPnl.ui.browser.BrowserManager.getDriver;
 import static innerspaceAdmPnl.ui.config.Waits.waitToBeClickable;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class Wrappers {
     private static final JavascriptExecutor executor = (JavascriptExecutor) getDriver();
@@ -18,7 +19,6 @@ public class Wrappers {
     // Clicks on a web element, uses JavaScript click as a fallback
     public static void click(WebElement element) {
         waitToBeClickable(element); // Waits until the element is clickable
-
         try {
             element.click(); // Tries to click the element normally
         } catch(Exception e) {
@@ -36,5 +36,11 @@ public class Wrappers {
     public static void clear(WebElement element) {
         waitToBeClickable(element); // Ensures the element is clickable
         element.clear(); // Clears the text in the element
+    }
+
+    public static void actionClick(WebElement element) {
+        waitToBeClickable(element);
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(element).click().perform();
     }
 }

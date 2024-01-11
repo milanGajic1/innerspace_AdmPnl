@@ -33,6 +33,7 @@ public class LogInPage extends BasePage {
     public void login(String url) {
         navigateToPage(url);
         clickSignIn();
+        clickOnExistingMicrosoftUser();
     }
     public void navigateToPage(String url) {
         driver.get(url);
