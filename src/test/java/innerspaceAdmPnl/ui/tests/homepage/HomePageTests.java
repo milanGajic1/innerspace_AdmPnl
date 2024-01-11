@@ -1,11 +1,11 @@
 package innerspaceAdmPnl.ui.tests.homepage;
 
-import innerspaceAdmPnl.ui.config.Waits;
+import innerspaceAdmPnl.ui.browser.BrowserManager;
 import innerspaceAdmPnl.ui.pages.login.LogInPage;
 import innerspaceAdmPnl.ui.pages.login.HomePage;
 import innerspaceAdmPnl.ui.tests.BaseTest;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
-import org.testng.Assert;
 
 import static innerspaceAdmPnl.ui.config.Constants.INNERSPACE_ADMIN_PANEL_URL;
 
@@ -21,8 +21,11 @@ public class HomePageTests extends BaseTest {
         homePage.clickDarkModeButton();
 
         // Step 4: Verify the page is in dark mode
-        Waits.waitForPageLoadComplete();
-        boolean isDarkMode = homePage.isPageInDarkMode();
-        Assert.assertTrue(isDarkMode, "The page is not in dark mode after clicking the dark mode button.");
+        homePage.assertDarkMode();
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDownClass() {
+        BrowserManager.closeDriver();
     }
 }

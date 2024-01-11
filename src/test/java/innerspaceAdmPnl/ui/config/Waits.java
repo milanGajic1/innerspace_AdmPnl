@@ -22,12 +22,13 @@ public class Waits {
     }
 
     // Waits for an element to be clickable before performing any action
-    public static void waitToBeClickable(WebElement element) {
+    public static WebElement waitToBeClickable(WebElement element) {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception exception) {
             System.out.println("Element " + element + " is not clickable.");
         }
+        return element;
     }
 
     // Waits for the entire web page to load completely
@@ -38,6 +39,7 @@ public class Waits {
             System.out.println("Page did not load completely.");
         }
     }
+
     // Waits for an element, identified by its locator, to be clickable before performing any action
     public static WebElement waitToBeClickable(By locator) {
         try {
@@ -47,6 +49,7 @@ public class Waits {
             return null;
         }
     }
+
     // Waits for an element to be visible on the web page, identified by its locator
     public static WebElement waitToBeVisible(By locator) {
         try {
