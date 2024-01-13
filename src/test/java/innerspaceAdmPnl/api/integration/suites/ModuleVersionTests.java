@@ -1,6 +1,6 @@
 package innerspaceAdmPnl.api.integration.suites;
 
-import com.projectname.api.client.asserts.ValidationSchemaAssert;
+import innerspaceAdmPnl.api.integration.asserts.ValidationSchemaAssert;
 import innerspaceAdmPnl.api.calls.ModulesApi;
 import io.qameta.allure.Description;
 import org.testng.annotations.Test;

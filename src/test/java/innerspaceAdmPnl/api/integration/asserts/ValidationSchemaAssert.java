@@ -1,4 +1,4 @@
-package com.projectname.api.client.asserts;
+package innerspaceAdmPnl.api.integration.asserts;
 
 import innerspaceAdmPnl.api.common.ResponseValidation;
 import org.testng.asserts.SoftAssert;
