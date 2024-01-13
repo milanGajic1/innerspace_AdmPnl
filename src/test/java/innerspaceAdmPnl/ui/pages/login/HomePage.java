@@ -20,7 +20,7 @@ public class HomePage {
         this.driver = driver;
     }
 
-    public void assertDarkMode() {
+    public boolean assertDarkMode() {
         WebElement mainContentElement = driver.findElement(mainContent);
         Waits.waitToBeVisible(mainContentElement);
 
@@ -35,6 +35,7 @@ public class HomePage {
         // Assert the background color and text color
         Assert.assertEquals(backgroundColor, expectedBackgroundColor, "Background color does not match the expected value for dark mode.");
         Assert.assertEquals(textColor, expectedTextColor, "Text color does not match the expected value for dark mode.");
+        return true;
     }
 
     public void clickDarkModeButton() {
