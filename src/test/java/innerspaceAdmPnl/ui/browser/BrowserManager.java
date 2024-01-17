@@ -5,7 +5,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 
 public class BrowserManager {
     private static WebDriver driver;
-    private BrowserManager() {
+    public BrowserManager() {
     }
 
     public static WebDriver getDriver() {
