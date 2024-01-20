@@ -1,6 +1,7 @@
 package innerspaceAdmPnl.ui.tests.homepage;
 
 import innerspaceAdmPnl.ui.browser.BrowserManager;
+import innerspaceAdmPnl.ui.config.Waits;
 import innerspaceAdmPnl.ui.pages.login.LogInPage;
 import innerspaceAdmPnl.ui.pages.login.HomePage;
 import innerspaceAdmPnl.ui.tests.BaseTest;
@@ -24,8 +25,19 @@ public class HomePageTests extends BaseTest {
         homePage.assertDarkMode();
     }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        BrowserManager.closeDriver();
+    @Test
+    public void testProfilePage() {
+        LogInPage loginPage = new LogInPage(driver);
+        HomePage homePage = new HomePage(driver);
+        // Step 1: Log in
+        loginPage.login(INNERSPACE_ADMIN_PANEL_URL);
+        Waits.waitForPageLoadComplete();
+        homePage.openUserProfilePage();
+
     }
+
+//    @AfterClass(alwaysRun = true)
+//    public void tearDownClass() {
+//        BrowserManager.closeDriver();
+//    }
 }
