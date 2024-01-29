@@ -48,7 +48,7 @@ public class GsonFunctions {
     }
 
     //    Verify response of deserialized json object into gson model
-    public static ResponseValidation verifyResponse(Response jsonResponse, Class modeledClass){
+    public static ResponseValidation verifyResponse(Response jsonResponse, Class modeledClass) {
         ResponseValidation responseValidation = new ResponseValidation();
         String json = jsonResponse.body().asString();
         JsonElement jsonElement = new JsonParser().parse(json);
@@ -102,7 +102,7 @@ public class GsonFunctions {
 
         Field field = null;
         try {
-            for (Map.Entry<String,  JsonElement> property : jsonResponse.entrySet()) {
+            for (Map.Entry<String, JsonElement> property : jsonResponse.entrySet()) {
                 if (!classFields.contains(property.getKey())) {
                     unknownFields.add("Model " + modeledClass.getCanonicalName() + " does not contain property " + property.getKey());
                 } else {
@@ -156,7 +156,7 @@ public class GsonFunctions {
     }
 
     //    Verify if required fields exist in Json schema
-    private static List<String> verifyRequiredFieldsValue(Map.Entry<String, JsonElement> property, Class modeledClass, List<String> reqFieldMissingValue){
+    private static List<String> verifyRequiredFieldsValue(Map.Entry<String, JsonElement> property, Class modeledClass, List<String> reqFieldMissingValue) {
         if (reqFieldMissingValue.contains(property.getKey())) {
             if (property.getValue().isJsonNull()) {
                 requiredFieldMissingValue.add("Required field " + modeledClass.getCanonicalName() + "::" + property.getKey() + " is null");
@@ -175,8 +175,7 @@ public class GsonFunctions {
             for (JsonElement jsonElement : jsonArray) {
                 if (jsonElement.isJsonObject()) {
                     verifyResponse(jsonElement.getAsJsonObject(), modeledClass);
-                }
-                else {
+                } else {
                     Map.Entry<String, JsonElement> childProperty = new MapEntry(property.getKey(), jsonElement);
                     verifyType(childProperty, modeledClass, rootClass);
                 }
@@ -215,7 +214,7 @@ public class GsonFunctions {
                 wrongTypeFields.add(rootClass.getCanonicalName() + "::" + property.getKey() + "[value " + property.getValue() + " is not of expected type " + fieldTypeClass + "]");
             }
         }
-        return  wrongTypeFields;
+        return wrongTypeFields;
     }
 
     public static <T> T parseSuccessResponseToModel(Response jsonResponse, Class<T> classOfT) {
@@ -228,7 +227,7 @@ public class GsonFunctions {
             } else {
                 return new Gson().fromJson(prettyJsonString, (Type) classOfT);
             }
-        } catch (JsonSyntaxException|IllegalStateException e) {
+        } catch (JsonSyntaxException | IllegalStateException e) {
             Assert.fail("Endpoint for processing " + classOfT + "\n return error: " + prettyJsonString
                     + "\n serialization exception error: " + e.getMessage());
         }
@@ -245,7 +244,7 @@ public class GsonFunctions {
             } else {
                 return Arrays.asList(new Gson().fromJson(prettyJsonString, (Type) classOfT));
             }
-        } catch (JsonSyntaxException|IllegalStateException e) {
+        } catch (JsonSyntaxException | IllegalStateException e) {
             Assert.fail("Endpoint for processing " + classOfT + "\n return error: " + prettyJsonString +
                     "\n serialization exception error: " + e.getMessage());
         }
@@ -270,7 +269,7 @@ public class GsonFunctions {
         return null;
     }
 
-    public static <T> T parseErrorResponseToModel(Response jsonResponse, Class<T> classOfT){
+    public static <T> T parseErrorResponseToModel(Response jsonResponse, Class<T> classOfT) {
         String json = jsonResponse.body().asString();
         String prettyJsonString = "";
         try {
@@ -287,21 +286,21 @@ public class GsonFunctions {
         }
         return null;
     }
+
     public static <T> List<T> parseJsonArrayResponse(Response jsonResponse, Class<T[]> classOfT) {
         String json = jsonResponse.body().asString();
-        try {
-            Type listType = TypeToken.getParameterized(List.class, classOfT.getComponentType()).getType();
-            List<T> list = new Gson().fromJson(json, listType);
-
-            if (jsonResponse.getStatusCode() >= 400 && jsonResponse.getStatusCode() < 600) {
-                Assert.fail("Endpoint for processing " + classOfT.getComponentType().getSimpleName() + " list returned error: " + jsonResponse.body().prettyPrint());
+        int statusCode = jsonResponse.getStatusCode();
+        if (statusCode >= 200 && statusCode < 300) {
+            try {
+                Type listType = TypeToken.getParameterized(List.class, classOfT.getComponentType()).getType();
+                return new Gson().fromJson(json, listType);
+            } catch (JsonSyntaxException | IllegalStateException e) {
+                throw new AssertionError("Error deserializing " + classOfT.getComponentType().getSimpleName() + " list: " + e.getMessage() + ", Response: " + json);
             }
-
-            return list;
-        } catch (JsonSyntaxException | IllegalStateException e) {
-            Assert.fail("Error deserializing " + classOfT.getComponentType().getSimpleName() + " list: " + e.getMessage() + ", Response: " + jsonResponse.body().prettyPrint());
-            return null;
+        } else {
+            throw new AssertionError("Endpoint for processing " + classOfT.getComponentType().getSimpleName() + " list returned error (Status Code: " + statusCode + "): " + json);
         }
     }
+
 
 }
