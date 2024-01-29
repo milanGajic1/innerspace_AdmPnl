@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import innerspaceAdmPnl.api.annotations.ResponseRequiredField;
 
 import groovy.util.MapEntry;
@@ -285,6 +286,22 @@ public class GsonFunctions {
                     " for processing class" + classOfT);
         }
         return null;
+    }
+    public static <T> List<T> parseJsonArrayResponse(Response jsonResponse, Class<T[]> classOfT) {
+        String json = jsonResponse.body().asString();
+        try {
+            Type listType = TypeToken.getParameterized(List.class, classOfT.getComponentType()).getType();
+            List<T> list = new Gson().fromJson(json, listType);
+
+            if (jsonResponse.getStatusCode() >= 400 && jsonResponse.getStatusCode() < 600) {
+                Assert.fail("Endpoint for processing " + classOfT.getComponentType().getSimpleName() + " list returned error: " + jsonResponse.body().prettyPrint());
+            }
+
+            return list;
+        } catch (JsonSyntaxException | IllegalStateException e) {
+            Assert.fail("Error deserializing " + classOfT.getComponentType().getSimpleName() + " list: " + e.getMessage() + ", Response: " + jsonResponse.body().prettyPrint());
+            return null;
+        }
     }
 
 }

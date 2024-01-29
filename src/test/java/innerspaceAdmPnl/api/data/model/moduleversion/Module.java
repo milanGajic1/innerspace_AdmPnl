@@ -2,6 +2,7 @@ package innerspaceAdmPnl.api.data.model.moduleversion;
 
 import java.io.Serializable;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,7 +19,7 @@ public class Module implements Serializable {
     private Integer id;
     @SerializedName("moduleVersions")
     @Expose
-    private List<String> moduleVersions;
+    private List<ModuleVersion> moduleVersions;
     @SerializedName("created")
     @Expose
     private String created;
@@ -29,7 +30,7 @@ public class Module implements Serializable {
     public Module() {
     }
 
-    public Module(String identifier, String name, Integer id, List<String> moduleVersions, String created, String changed) {
+    public Module(String identifier, String name, Integer id, List<ModuleVersion> moduleVersions, String created, String changed) {
         super();
         this.identifier = identifier;
         this.name = name;
@@ -63,11 +64,11 @@ public class Module implements Serializable {
         this.id = id;
     }
 
-    public List<String> getModuleVersions() {
+    public List<ModuleVersion> getModuleVersions() {
         return moduleVersions;
     }
 
-    public void setModuleVersions(List<String> moduleVersions) {
+    public void setModuleVersions(List<ModuleVersion> moduleVersions) {
         this.moduleVersions = moduleVersions;
     }
 
