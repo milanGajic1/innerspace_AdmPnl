@@ -1,6 +1,8 @@
 package innerspaceAdmPnl.api.schemavalidation.suites;
 
 import innerspaceAdmPnl.api.calls.AccessPermissionApi;
+import innerspaceAdmPnl.api.calls.ApplicationApi;
+import innerspaceAdmPnl.api.calls.ApplicationVersionApi;
 import innerspaceAdmPnl.api.schemavalidation.asserts.ValidationSchemaAssert;
 import innerspaceAdmPnl.api.calls.ModulesApi;
 import io.qameta.allure.Description;
@@ -33,10 +35,21 @@ public class SchemaValidationTests {
     public static void verifyGetAccessPermissionResponse() throws Exception {
         new ValidationSchemaAssert().assertResponseStructure(AccessPermissionApi.validateAccessPermission());
     }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Applications Response")
+    public static void verifyGetApplicationsResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(ApplicationApi.validateApplications());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Applications Versions Response")
+    public static void verifyGetApplicationsVersionsResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(ApplicationVersionApi.validateApplicationsVersions());
+    }
 
     @AfterMethod
     public void logEnd(Method method) {
         logger.info("Finished test: " + method.getName());
+        logger.info("Test '" + method.getName() + "' was successful.");
     }
 }
 

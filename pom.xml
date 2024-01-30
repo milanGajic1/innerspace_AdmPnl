@@ -95,6 +95,8 @@
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/java/innerspaceAdmPnl/ui/ui-tests.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/java/innerspaceAdmPnl/api/api-tests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.7/aspectjweaver-1.9.7.jar"

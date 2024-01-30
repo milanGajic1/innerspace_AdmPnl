@@ -18,7 +18,7 @@ public class Application implements Serializable {
     private String folder;
     @SerializedName("applicationVersions")
     @Expose
-    private List<String> applicationVersions;
+    private List<ApplicationVersion> applicationVersions;
     @SerializedName("created")
     @Expose
     private String created;
@@ -29,7 +29,7 @@ public class Application implements Serializable {
     public Application() {
     }
 
-    public Application(String name, Integer id, String folder, List<String> applicationVersions, String created, String changed) {
+    public Application(String name, Integer id, String folder, List<ApplicationVersion> applicationVersions, String created, String changed) {
         super();
         this.name = name;
         this.id = id;
@@ -63,11 +63,11 @@ public class Application implements Serializable {
         this.folder = folder;
     }
 
-    public List<String> getApplicationVersions() {
+    public List<ApplicationVersion> getApplicationVersions() {
         return applicationVersions;
     }
 
-    public void setApplicationVersions(List<String> applicationVersions) {
+    public void setApplicationVersions(List<ApplicationVersion> applicationVersions) {
         this.applicationVersions = applicationVersions;
     }
 
