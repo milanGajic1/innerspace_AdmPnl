@@ -1,5 +1,6 @@
 package innerspaceAdmPnl.api.schemavalidation.suites;
 
+import innerspaceAdmPnl.api.calls.AccessPermissionApi;
 import innerspaceAdmPnl.api.schemavalidation.asserts.ValidationSchemaAssert;
 import innerspaceAdmPnl.api.calls.ModulesApi;
 import io.qameta.allure.Description;
@@ -12,9 +13,9 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 
-public class ModuleVersionTests {
+public class SchemaValidationTests {
 
-    private static final Logger logger = LogManager.getLogger(ModuleVersionTests.class);
+    private static final Logger logger = LogManager.getLogger(SchemaValidationTests.class);
 
     @BeforeMethod
     public void logStart(Method method) {
@@ -25,6 +26,12 @@ public class ModuleVersionTests {
     @Description("Validate Module Version Response")
     public static void verifyGetModuleVersionResponse() throws Exception {
         new ValidationSchemaAssert().assertResponseStructure(ModulesApi.validateModulesVersion());
+    }
+
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Access Permission Response")
+    public static void verifyGetAccessPermissionResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(AccessPermissionApi.validateAccessPermission());
     }
 
     @AfterMethod
