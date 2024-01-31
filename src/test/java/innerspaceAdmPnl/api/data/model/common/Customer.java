@@ -15,7 +15,7 @@ public class Customer implements Serializable {
     private String name;
     @SerializedName("roles")
     @Expose
-    private List<String> roles;
+    private List<Role> roles;
     @SerializedName("created")
     @Expose
     private String created;
@@ -26,7 +26,7 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(Integer id, String name, List<String> roles, String created, String changed) {
+    public Customer(Integer id, String name, List<Role> roles, String created, String changed) {
         this.id = id;
         this.name = name;
         this.roles = roles;
@@ -50,11 +50,11 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-    public List<String> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

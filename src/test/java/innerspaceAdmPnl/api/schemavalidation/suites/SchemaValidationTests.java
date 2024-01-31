@@ -1,10 +1,7 @@
 package innerspaceAdmPnl.api.schemavalidation.suites;
 
-import innerspaceAdmPnl.api.calls.AccessPermissionApi;
-import innerspaceAdmPnl.api.calls.ApplicationApi;
-import innerspaceAdmPnl.api.calls.ApplicationVersionApi;
+import innerspaceAdmPnl.api.calls.*;
 import innerspaceAdmPnl.api.schemavalidation.asserts.ValidationSchemaAssert;
-import innerspaceAdmPnl.api.calls.ModulesApi;
 import io.qameta.allure.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +41,36 @@ public class SchemaValidationTests {
     @Description("Validate Applications Versions Response")
     public static void verifyGetApplicationsVersionsResponse() throws Exception {
         new ValidationSchemaAssert().assertResponseStructure(ApplicationVersionApi.validateApplicationsVersions());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Customers Response")
+    public static void verifyGetCustomerResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(CustomerApi.validateCustomer());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Module Response")
+    public static void verifyGetModuleResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(ModuleApi.validateModule());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Role Response")
+    public static void verifyGetRoleResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(RoleApi.validateRole());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Sub-Modules Response")
+    public static void verifyGetSubModulesResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(SubModuleApi.validateSubModule());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate Sub-Modules Labels Response")
+    public static void verifyGetSubModulesLabelResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(SubModuleApi.validateSubModuleLabel());
+    }
+    @Test(groups = {"SchemaValidation"})
+    @Description("Validate User Response")
+    public static void verifyGetUserResponse() throws Exception {
+        new ValidationSchemaAssert().assertResponseStructure(UserApi.validateUser());
     }
 
     @AfterMethod

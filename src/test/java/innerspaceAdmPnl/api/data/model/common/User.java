@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String email;
     @SerializedName("role")
     @Expose
-    private String role;
+    private Role role;
     @SerializedName("locations")
     @Expose
     private List<Location> locations;
@@ -36,7 +36,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Integer id, String name, String email, String role, List<Location> locations, String lastLogin, String created, String changed) {
+    public User(Integer id, String name, String email, Role role, List<Location> locations, String lastLogin, String created, String changed) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -71,11 +71,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
