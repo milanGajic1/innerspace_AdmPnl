@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"innerspaceAdmPnl.ui.stepdefinitions"},
+        glue = {"innerspaceAdmPnl.ui.stepdefinitions", "innerspaceAdmPnl.api.stepdefinitions"},
         plugin = {"pretty", "html:target/cucumber-reports", "json:target/cucumber.json"},
         monochrome = true
 )

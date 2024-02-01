@@ -9,13 +9,13 @@ public class CucumberHooks {
 
     private WebDriver driver;
 
-    @Before
+    @Before("@UITest")
     public void setUpCucumber() {
         driver = BrowserManager.getDriver();
         driver.manage().window().maximize();
     }
 
-    @After
+    @After("@UITest")
     public void tearDownCucumber() {
         if (driver != null) {
             BrowserManager.closeDriver();

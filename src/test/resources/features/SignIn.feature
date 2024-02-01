@@ -1,3 +1,4 @@
+@UITest
 Feature: Innerspace Administration Panel Sign-In
 
   Scenario: Successfully signing in with an existing Microsoft account
