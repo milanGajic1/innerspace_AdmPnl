@@ -2,12 +2,19 @@ package innerspaceAdmPnl.ui.config;
 
 import static innerspaceAdmPnl.ui.browser.BrowserManager.getDriver;
 import static innerspaceAdmPnl.ui.config.Waits.waitToBeClickable;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Wrappers {
     private static final JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+    private static WebDriver driver = null;
+
+    public Wrappers(WebDriver driver) {
+        this.driver = driver;
+    }
 
     // Types text into a web element after clearing any existing text
     public static void type(WebElement element, String text) {
@@ -43,4 +50,19 @@ public class Wrappers {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(element).click().perform();
     }
+    // Method to click on any element and handle exceptions
+    public static void clickWithWait(By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(getDriver(), Constants.DEFAULT_WAIT_TIMEOUT);
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+            actionClick(element);
+        } catch (TimeoutException e) {
+            System.out.println("(" + locator.toString() + ")" + "Element not clickable after waiting.");
+        } catch (Exception e) {
+            System.out.println("An error occurred while clicking: " + e.getMessage());
+        }
+    }
+
+
+
 }
