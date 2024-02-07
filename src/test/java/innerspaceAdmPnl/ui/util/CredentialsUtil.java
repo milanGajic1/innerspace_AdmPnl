@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class CredentialsUtil {
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         try {
@@ -23,5 +23,21 @@ public class CredentialsUtil {
 
     public static String getPassword() {
         return properties.getProperty("password");
+    }
+
+    public static String getTenant() {
+        return properties.getProperty("tenant");
+    }
+
+    public static String getClientId() {
+        return properties.getProperty("clientId");
+    }
+
+    public static String getClientSecret() {
+        return properties.getProperty("clientSecret");
+    }
+
+    public static String getScope() {
+        return properties.getProperty("scope");
     }
 }

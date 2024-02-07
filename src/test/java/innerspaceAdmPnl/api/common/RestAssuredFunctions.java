@@ -1,35 +1,35 @@
 package innerspaceAdmPnl.api.common;
 
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
+import innerspaceAdmPnl.ui.util.CredentialsUtil;
 import io.restassured.response.Response;
 
-import java.util.Collections;
 
 import static io.restassured.RestAssured.given;
 
 public class RestAssuredFunctions {
 
-    private static String authority = "https://login.microsoftonline.com/{tenant}/";
-    private static String clientId = "your_client_id";
-    private static String clientSecret = "your_client_secret";
-    private static String scope = "your_scope";
+    private static final String authority = "https://login.microsoftonline.com/" + CredentialsUtil.getTenant() + "/oauth2/v2.0/token";
+    private static final String clientId = CredentialsUtil.getClientId();
+    private static final String clientSecret = CredentialsUtil.getClientSecret();
+    private static final String scope = CredentialsUtil.getScope();
 
-    private static String getAccessToken() throws Exception {
-        ConfidentialClientApplication app = ConfidentialClientApplication.builder(
-                        clientId,
-                        ClientCredentialFactory.createFromSecret(clientSecret))
-                .authority(authority)
-                .build();
+    public static String getAccessToken() {
+        Response response = given()
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+                .formParam("client_id", clientId)
+                .formParam("scope", scope)
+                .formParam("grant_type", "client_credentials")
+                .formParam("client_secret", clientSecret)
+                .when()
+                .post(authority);
 
-        ClientCredentialParameters clientCredentialParam = ClientCredentialParameters.builder(
-                        Collections.singleton(scope))
-                .build();
+        String accessToken = response.jsonPath().getString("access_token");
 
-        IAuthenticationResult result = app.acquireToken(clientCredentialParam).join();
-        return result.accessToken();
+        if (accessToken == null || accessToken.isEmpty()) {
+            throw new RuntimeException("Failed to retrieve access token");
+        }
+
+        return accessToken;
     }
 
     public static Response sendGetRequest(String endpoint) throws Exception {
@@ -37,7 +37,7 @@ public class RestAssuredFunctions {
 
         return given()
                 .header("Authorization", "Bearer " + token)
-//                .log().all() // Logs the request details
+                .log().all() // Logs the request details
                 .when()
                 .get(endpoint)
                 .then()
