@@ -37,7 +37,7 @@ public class RestAssuredFunctions {
 
         return given()
                 .header("Authorization", "Bearer " + token)
-                .log().all() // Logs the request details
+//                .log().all() // Logs the request details
                 .when()
                 .get(endpoint)
                 .then()
